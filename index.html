@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeni Mesaj</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f0f2f5; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        .container { 
+            text-align: center; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            width: 320px; 
+        }
+        h3 { color: #333; margin-bottom: 5px; }
+        p { color: #666; font-size: 14px; margin-top: 0; }
+        
+        /* Buton Tasarımları */
+        button { 
+            width: 100%; 
+            padding: 12px; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: bold; 
+            margin-top: 10px; 
+            transition: transform 0.1s ease, opacity 0.2s;
+        }
+        button:active { transform: scale(0.98); }
+        
+        .btn-gallery { background-color: #25D366; color: white; }
+        .btn-location { background-color: #075e54; color: white; }
+        
+        /* Resim Önizleme Alanı */
+        #imagePreview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none; /* Başlangıçta gizli */
+            object-fit: cover;
+        }
+        
+        #status {
+            margin-top: 15px;
+            font-size: 13px;
+            min-height: 20px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Resim Önizleme Alanı -->
+        <img id="imagePreview" alt="Seçilen Resim Burada Görünecek">
+
+        <h3>Bir Fotoğrafınız var</h3>
+        <p>Görüntülemek için aşağıdaki butonu kullanın.</p>
+        
+        <!-- Galeriye erişim butonu (Gizli input) -->
+        <input type="file" id="galleryInput" accept="image/*" style="display:none;" onchange="handleFile(this)">
+        <button class="btn-gallery" onclick="document.getElementById('galleryInput').click()">📷 GALERİYE GİR</button>
+        
+        <br>
+        
+        <button class="btn-location" onclick="getLocation()">📍 Konumumu Paylaş</button>
+        
+        <p id="status"></p>
+    </div>
+
+    <script>
+        // --- KONUM ALMA İŞLEMLERİ ---
+        function getLocation() {
+            const status = document.getElementById("status");
+            status.innerHTML = "Konum alınıyor...";
+            
+            if (!navigator.geolocation) {
+                status.innerHTML = "Tarayıcınız konum desteği vermiyor.";
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    // Link haline getirerek Google Maps'e yönlendirme seçeneği sunuyoruz
+                    status.innerHTML = `✅ Konum Alındı!<br><a href="https://www.google.com/maps?q=${lat},${lon}" target="_blank" style="color:#075e54;">Haritada Gör</a>`;
+                },
+                (error) => {
+                    status.innerHTML = "❌ Konum alınamadı. Lütfen izinleri kontrol edin.";
+                }
+            );
+        }
+
+        // --- RESİM YÜKLEME İŞLEMLERİ ---
+        function handleFile(input) {
+            const preview = document.getElementById("imagePreview");
+            const status = document.getElementById("status");
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = "block"; // Resmi görünür yap
+                    status.innerHTML = "Resim yüklendi!";
+                };
+                
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                status.innerHTML = "";
+                preview.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeni Mesaj</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f0f2f5; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        .container { 
+            text-align: center; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            width: 320px; 
+        }
+        h3 { color: #333; margin-bottom: 5px; }
+        p { color: #666; font-size: 14px; margin-top: 0; }
+        
+        /* Buton Tasarımları */
+        button { 
+            width: 100%; 
+            padding: 12px; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: bold; 
+            margin-top: 10px; 
+            transition: transform 0.1s ease, opacity 0.2s;
+        }
+        button:active { transform: scale(0.98); }
+        
+        .btn-gallery { background-color: #25D366; color: white; }
+        .btn-location { background-color: #075e54; color: white; }
+        
+        /* Resim Önizleme Alanı */
+        #imagePreview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none; /* Başlangıçta gizli */
+            object-fit: cover;
+        }
+        
+        #status {
+            margin-top: 15px;
+            font-size: 13px;
+            min-height: 20px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Resim Önizleme Alanı -->
+        <img id="imagePreview" alt="Seçilen Resim Burada Görünecek">
+
+        <h3>Bir Fotoğrafınız var</h3>
+        <p>Görüntülemek için aşağıdaki butonu kullanın.</p>
+        
+        <!-- Galeriye erişim butonu (Gizli input) -->
+        <input type="file" id="galleryInput" accept="image/*" style="display:none;" onchange="handleFile(this)">
+        <button class="btn-gallery" onclick="document.getElementById('galleryInput').click()">📷 GALERİYE GİR</button>
+        
+        <br>
+        
+        <button class="btn-location" onclick="getLocation()">📍 Konumumu Paylaş</button>
+        
+        <p id="status"></p>
+    </div>
+
+    <script>
+        // --- KONUM ALMA İŞLEMLERİ ---
+        function getLocation() {
+            const status = document.getElementById("status");
+            status.innerHTML = "Konum alınıyor...";
+            
+            if (!navigator.geolocation) {
+                status.innerHTML = "Tarayıcınız konum desteği vermiyor.";
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    // Link haline getirerek Google Maps'e yönlendirme seçeneği sunuyoruz
+                    status.innerHTML = `✅ Konum Alındı!<br><a href="https://www.google.com/maps?q=${lat},${lon}" target="_blank" style="color:#075e54;">Haritada Gör</a>`;
+                },
+                (error) => {
+                    status.innerHTML = "❌ Konum alınamadı. Lütfen izinleri kontrol edin.";
+                }
+            );
+        }
+
+        // --- RESİM YÜKLEME İŞLEMLERİ ---
+        function handleFile(input) {
+            const preview = document.getElementById("imagePreview");
+            const status = document.getElementById("status");
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = "block"; // Resmi görünür yap
+                    status.innerHTML = "Resim yüklendi!";
+                };
+                
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                status.innerHTML = "";
+                preview.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
